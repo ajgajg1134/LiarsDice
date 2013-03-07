@@ -47,12 +47,24 @@ namespace LiarsDice
             players.Remove(p);
         }
         /// <summary>
-        /// Removes all players from the game.
-        /// Does not change maxDice
+        /// Resets all players and takes outPlayers and puts them back into game.
+        /// Gives all players back their dice and shakes them.
         /// </summary>
         public void resetGame()
         {
-            players = new List<Player>();
+            foreach(Player p in players)
+            {
+                outPlayers.Add(p);
+            }
+            players = outPlayers;
+            outPlayers = new List<Player>();
+
+            foreach (Player p in players)
+            {
+                p.setMaxDice(maxDice);
+                p.shakeDice();
+            }
+
         }
         /// <summary>
         /// changes maximum number of dice for all players. If in middle of game all players will get new max.
