@@ -9,6 +9,7 @@ namespace LiarsDice
     {
         private int maxDice;
         private List<Player> players = new List<Player>();
+        private List<Player> outPlayers = new List<Player>();
         private int currentPlayer = 0;
         public GameMaster(int maxD)
         {
@@ -36,6 +37,11 @@ namespace LiarsDice
             else
                 currentPlayer++;
         }
+
+        /// <summary>
+        /// Removes player from currently playing players
+        /// </summary>
+        /// <param name="p">Player to remove</param>
         public void removePlayer(Player p)
         {
             players.Remove(p);
@@ -76,31 +82,92 @@ namespace LiarsDice
         }
         /// <summary>
         /// Call this when a player says bull-poop. 
+        /// Removes a die from the appropriate player 
         /// </summary>
         /// <param name="numDice">Number of dice player guessed</param>
         /// <param name="valDie">value of die guessed on</param>
-        /// <returns>True if the call was correct, false otherwise</returns>
-        public bool callBull(int numDice, int valDie)
+        public void callBull(int numDice, int valDie)
         {
             int total = getDieNumAll(valDie);
             if (total < numDice)
-                return true;//Bull-poop was correct, not enough dice on table
+            {
+                //Bull-poop was correct, not enough dice on table
+                getPrevPlayer().removeDie();
+            }
             else
-                return false;//bull-poop wrong, enough dice on table.
+            {
+                //bull-poop wrong, enough dice on table.
+                getCurrentPlayer().removeDie();
+            }
+
+            //This last line must be called on this and spot on function
+            endRound();
+            
+        }
+        /// <summary>
+        /// Gets the previous player (one who last made a bet)
+        /// </summary>
+        /// <returns>the player who made a bet</returns>
+        private Player getPrevPlayer()
+        {
+            if (currentPlayer > 0)
+                return players.ElementAt(currentPlayer - 1);
+            else
+                return players.ElementAt(players.Count - 1);
         }
         /// <summary>
         /// Call this when a player says Spot On
+        /// Removes a die from the appropriate player 
         /// </summary>
         /// <param name="numDice">Number of dice player guessed</param>
         /// <param name="valDie">value of die guessed on</param>
-        /// <returns>True if the call was correct, false otherwise</returns>
-        public bool callSpotOn(int numDice, int valDie)
+        public void callSpotOn(int numDice, int valDie)
         {
             int total = getDieNumAll(valDie);
             if (total == numDice)
-                return true;//Spot on call was correct, exactly that many dice on table
+            {
+                //Spot on call was correct, exactly that many dice on table
+                getPrevPlayer().removeDie();
+            }
             else
-                return false;//spot on was wrong, not enough or too many dice on table
+            {
+                //spot on was wrong, not enough or too many dice on table
+                getCurrentPlayer().removeDie();
+            }
+            //This last line must be called on this and bs function
+            endRound();
+        }
+        /// <summary>
+        /// Ends current round of play, rerolls all dice and checks for players without dice and moves them to the out players list
+        /// </summary>
+        private void endRound()
+        {
+            List<Player> temp = new List<Player>();
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (!players.ElementAt(i).hasDice())
+                {
+                    temp.Add(players.ElementAt(i));
+                    outPlayers.Add(players.ElementAt(i));
+                }
+                else
+                {
+                    players.ElementAt(i).shakeDice();
+                }
+
+            }
+
+            foreach (Player p in temp)
+            {
+                players.Remove(p);
+            }
+
+            if (players.Count == 1)
+            {
+                //End game things should go here
+                //Declare winner and add players in outPlayers back to players
+                //Ask players if they want to play again.
+            }
         }
 
     }
