@@ -82,5 +82,16 @@ namespace LiarsDice
             else
                 return false;
         }
+        /// <summary>
+        /// Verifys if a player has dice remaining.
+        /// </summary>
+        /// <returns>true if player has non-zero amount of dice.</returns>
+        public bool hasDice()
+        {
+            if (numDice > 0)
+                return true;
+            else
+                return false;
+        }
     }
 }
