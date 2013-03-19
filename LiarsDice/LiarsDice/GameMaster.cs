@@ -23,6 +23,10 @@ namespace LiarsDice
         {
             players.Add(new Player(maxDice, name));
         }
+        /// <summary>
+        /// Gets the player whose turn it is
+        /// </summary>
+        /// <returns>the player object with the turn</returns>
         public Player getCurrentPlayer()
         {
             return players.ElementAt(currentPlayer);
@@ -148,6 +152,16 @@ namespace LiarsDice
             }
             //This last line must be called on this and bs function
             endRound();
+        }
+        /// <summary>
+        /// Shakes all player's dice
+        /// </summary>
+        public void shakeAllDice()
+        {
+            foreach (Player p in players)
+            {
+                p.shakeDice();
+            }
         }
         /// <summary>
         /// Ends current round of play, rerolls all dice and checks for players without dice and moves them to the out players list

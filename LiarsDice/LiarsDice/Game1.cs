@@ -19,6 +19,17 @@ namespace LiarsDice
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D[] dice = new Texture2D[6];
+
+        Texture2D rollBtn;
+
+        Rectangle rollBtnRect = new Rectangle(20, 120, 93, 63);
+
+        GameMaster gm = new GameMaster(5);
+
+
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,6 +45,7 @@ namespace LiarsDice
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            this.IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -46,6 +58,18 @@ namespace LiarsDice
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            dice[0] = this.Content.Load<Texture2D>("dice/one");
+            dice[1] = this.Content.Load<Texture2D>("dice/two");
+            dice[2] = this.Content.Load<Texture2D>("dice/three");
+            dice[3] = this.Content.Load<Texture2D>("dice/four");
+            dice[4] = this.Content.Load<Texture2D>("dice/five");
+            dice[5] = this.Content.Load<Texture2D>("dice/six");
+
+            rollBtn = this.Content.Load<Texture2D>("roll");
+
+            gm.addPlayer("Andrew");
+            gm.shakeAllDice();
 
             // TODO: use this.Content to load your game content here
         }
@@ -70,6 +94,13 @@ namespace LiarsDice
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            MouseState ms = Mouse.GetState();
+
+            if (ms.LeftButton.Equals(ButtonState.Pressed) && rollBtnRect.Contains(ms.X, ms.Y))
+            {
+                gm.shakeAllDice();
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -83,8 +114,22 @@ namespace LiarsDice
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            Rectangle drawHere = new Rectangle(20, 20, 100, 100);
 
+            spriteBatch.Begin();
+            foreach (int i in gm.getCurrentPlayer().getAllDice())
+            {
+                spriteBatch.Draw(dice[i-1], drawHere, Color.White);
+                drawHere.X += 105;
+            }
+
+            spriteBatch.Draw(rollBtn, rollBtnRect, Color.White);
+
+
+
+
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

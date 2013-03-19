@@ -2,3 +2,13 @@
 *.csproj
 *.cache
 *.suo
+*.exe
+*.xnb
+LiarsDice/LiarsDice/bin/x86/Debug/LiarsDice.pdb
+LiarsDice/LiarsDice/LiarsDice.csproj.Debug.cachefile
+LiarsDice/LiarsDice/obj/x86/Debug/cachefile-{B314C718-6B02-49E3-8CA2-3A9A2393D492}-targetpath.txt
+LiarsDice/LiarsDice/obj/x86/Debug/LiarsDice.csproj.FileListAbsolute.txt
+LiarsDice/LiarsDice/obj/x86/Debug/LiarsDice.pdb
+LiarsDice/LiarsDice/obj/x86/Debug/Microsoft.Xna.Framework.RuntimeProfile.txt
+LiarsDice/LiarsDiceContent/obj/x86/Debug/ContentPipeline-.xml
+LiarsDice/LiarsDiceContent/obj/x86/Debug/LiarsDiceContent.contentproj.FileListAbsolute.txt
